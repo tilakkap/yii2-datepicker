@@ -68,7 +68,7 @@ class DatePicker extends InputWidget
     private $_clientEvents = [];
     private $_hasHiddenField = false;
     private $_js;
-    //public $id;
+    public $insidePjax = false;
 
     /**
      * @inheritdoc
@@ -273,6 +273,6 @@ class DatePicker extends InputWidget
         $this->_js .= ";" . $selector . ".find('.ht-remove').click(function(event){" . $selector . ".datepicker('hide');jQuery('input#" . $this->options['id'] . "').val('');})";
 
         // will fire on initial page load, and subsequent PJAX page loads
-        $view->registerJs('jQuery(document).on("ready pjax:end", function() {'.$this->_js. '});', $view::POS_END);
+        $view->registerJs('jQuery(document).on("ready' . ($this->insidePjax ? ' pjax:end' : '') . '", function() {' . $this->_js . '});', $view::POS_END);
     }
 }
