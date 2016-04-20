@@ -1,0 +1,23 @@
+{
+    "name": "hoppe/yii2-datepicker",
+    "description": "DatePicker Thai BE",
+    "type": "yii2-extension",
+    "keywords": ["yii2","datepicker","calendar", "thai"],
+    "license": "BSD-3-Clause",
+    "authors": [
+        {
+            "name": "Thomas Hoppe",
+            "email": "webhoppe@web.de"
+        }
+    ],
+    "require": {
+        "yiisoft/yii2": "~2.0.0",
+        "yiisoft/yii2-bootstrap": "~2.0.3",
+        "bower-asset/bootstrap-datepicker": "1.4.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "hoppe\\datepicker\\": ""
+        }
+    }
+}
