@@ -1,6 +1,6 @@
 DatePicker
 ==========
-DatePicker Thai BE
+DatePicker Thai BE pjax ready
 
 Installation
 ------------
@@ -28,4 +28,26 @@ Usage
 Once the extension is installed, simply use it in your code by  :
 
 ```php
-<?= \hoppe\datepicker\DatePicker::widget(); ?>```
+<?= DatePicker::widget([
+    'type'          => DatePicker::TYPE_BUTTON,
+    'value'         => '2001-01-08',
+    'options' =>[
+        'class'=>'btn btn-link',
+        'label'=> '<span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span>',
+    ],
+    'clientOptions' => [
+        'format' => 'yyyy-mm-dd',
+        'autoclose'   => true,
+        'minViewMode' => 1,
+        'endDate' => 'new Date();',
+        'startDate' => '-2y',
+
+    ],
+    'clientEvents' => [
+        "changeDate" => "function(e) {
+            document.location.href = '".Url::to(['/site/index'])."?from_date=' + e.format();
+        }",
+
+    ]
+]);
+?>```

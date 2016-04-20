@@ -272,6 +272,7 @@ class DatePicker extends InputWidget
         }
         $this->_js .= ";" . $selector . ".find('.ht-remove').click(function(event){" . $selector . ".datepicker('hide');jQuery('input#" . $this->options['id'] . "').val('');})";
 
-        $view->registerJs('(function ($) {'.$this->_js.'}(jQuery));', $view::POS_END);
+        // will fire on initial page load, and subsequent PJAX page loads
+        $view->registerJs('jQuery(document).on("ready pjax:end", function() {'.$this->_js. '});', $view::POS_END);
     }
 }
