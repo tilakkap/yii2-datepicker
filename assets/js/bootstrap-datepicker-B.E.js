@@ -15,7 +15,7 @@
             , shbound : 40  // short year value that detect as thai year
             , shwrap  : 84  // short year value that wrap to previous century
             , shbase  : 2000  // default base for short year 20xx
-        }
+        };
 
     function dspThaiYear(language) {
         return language.search(thai.code)>=0
@@ -27,10 +27,10 @@
 
     function smartFullYear(v,language){
         if (smartThai(language) && v>=thai.bound)
-            v -= thai.adj // thaiyear 24xx -
+            v -= thai.adj;// thaiyear 24xx -
 
         if (dspThaiYear(language) && v < thai.bound - thai.adj)
-            v -= thai.adj
+            v -= thai.adj;
 
         return v;
     }
@@ -41,7 +41,7 @@
                 v -= 100; // 1970 - 1999
 
             if (smartThai(language) && v>=thai.shbound)
-                v -= (thai.adj%100) // thaiyear [2540..2569] -> [1997..2026]
+                v -= (thai.adj%100);// thaiyear [2540..2569] -> [1997..2026]
 
             v += thai.shbase;
         }
@@ -59,16 +59,16 @@
     // inherit default backend
 
     if (DPGlobal.name && DPGlobal.name.search(/.th$/)>=0)
-        return
+        return;
 
-    var  _basebackend_ = $.extend({},DPGlobal)
+    var  _basebackend_ = $.extend({},DPGlobal);
 
     $.extend(DPGlobal,{
         name:       (_basebackend_.name || '') + '.th'
         , parseDate:
             function(date, format, language) {
                 if (date=='') {
-                    date = new Date()
+                    date = new Date();
                     date = UTCDate(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0)
                 }
 
@@ -76,20 +76,20 @@
                     && !((date instanceof Date) || /^[-+].*/.test(date))) {
 
                     var formats = format //this.parseFormat(format)
-                        , parts   = date && date.match(this.nonpunctuation) || []
+                        , parts   = date && date.match(this.nonpunctuation) || [];
 
                     if (typeof formats === 'string')
                         formats = DPGlobal.parseFormat(format);
                     if (parts.length == formats.parts.length) {
                         var seps  = $.extend([], formats.separators)
-                            , xdate = []
+                            , xdate = [];
 
                         for (var i=0, cnt = formats.parts.length; i < cnt; i++) {
                             if (~['yyyy','yy'].indexOf(formats.parts[i]))
-                                parts[i] = '' + smartYear(parseInt(parts[i], 10),language)
+                                parts[i] = '' + smartYear(parseInt(parts[i], 10),language);
 
                             if (seps.length)
-                                xdate.push(seps.shift())
+                                xdate.push(seps.shift());
 
                             xdate.push(parts[i])
                         }
@@ -101,7 +101,7 @@
             }
         , formatDate:
             function(date, format, language){
-                var fmtdate = _basebackend_.formatDate.call(this,date,format,language)
+                var fmtdate = _basebackend_.formatDate.call(this,date,format,language);
 
                 if (dspThaiYear(language)){
                     var formats = format //this.parseFormat(format)
@@ -109,18 +109,18 @@
                         , trnfrm  = {
                             yy  : (thai.adj+date.getUTCFullYear()).toString().substring(2)
                             , yyyy: (thai.adj+date.getUTCFullYear()).toString()
-                        }
+                        };
 
                     if (typeof formats === 'string')
                         formats = DPGlobal.parseFormat(format);
 
                     if (parts.length == formats.parts.length) {
                         var seps  = $.extend([], formats.separators)
-                            , xdate = []
+                            , xdate = [];
 
                         for (var i=0, cnt = formats.parts.length; i < cnt; i++) {
                             if (seps.length)
-                                xdate.push(seps.shift())
+                                xdate.push(seps.shift());
 
                             xdate.push(trnfrm[formats.parts[i]] || parts[i])
                         }
@@ -130,31 +130,31 @@
                 }
                 return fmtdate
             }
-    })
+    });
 
     // inherit core datepicker
-    var DatePicker = $.fn.datepicker.Constructor
+    var DatePicker = $.fn.datepicker.Constructor;
 
     if (!DatePicker.prototype.fillThai){
-        var _basemethod_ = $.extend({},DatePicker.prototype)
+        var _basemethod_ = $.extend({},DatePicker.prototype);
 
         $.extend(DatePicker.prototype,{
             fillThai: function(){
                 var d         = new Date(this.viewDate)
                     , year      = d.getUTCFullYear()
                     , month     = d.getUTCMonth()
-                    , elem      = this.picker.find('.datepicker-days th:eq(1)')
+                    , elem      = this.picker.find('.datepicker-days th:eq(1)');
 
                 elem
                     .text(elem.text()
-                        .replace(''+year,''+(year+thai.adj)))
+                        .replace(''+year,''+(year+thai.adj)));
 
                 this.picker
                     .find('.datepicker-months')
                     .find('th.datepicker-switch')
-                    .text(''+(year+thai.adj))
+                    .text(''+(year+thai.adj));
 
-                year = parseInt((year+thai.adj)/10, 10) * 10
+                year = parseInt((year+thai.adj)/10, 10) * 10;
 
                 this.picker
                     .find('.datepicker-years')
@@ -170,20 +170,20 @@
                     })
             }
             , fill: function(){
-                _basemethod_.fill.call(this)
+                _basemethod_.fill.call(this);
 
                 if (dspThaiYear(this.o.language))
                     this.fillThai()
             }
             , clickThai: function(e){
-                var target  = $(e.target).closest('span')
+                var target  = $(e.target).closest('span');
 
                 if (target.length === 1 && target.is('.year'))
                     target.text(Number(target.text()) - thai.adj)
             }
             , click: function(e){
                 if (dspThaiYear(this.o.language))
-                    this.clickThai(e)
+                    this.clickThai(e);
 
                 _basemethod_.click.call(this,e)
             }
