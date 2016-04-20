@@ -252,6 +252,7 @@ class DatePicker extends InputWidget
             DatePickerAsset::register($view);
         }
 
+
         $selector = "jQuery('#" . $this->options['id'] . "')";
         if ($this->_hasHiddenField or $this->type === self::TYPE_COMPONENT) {
             $selector .= ".parent()";
@@ -271,6 +272,6 @@ class DatePicker extends InputWidget
         }
         $this->_js .= ";" . $selector . ".find('.ht-remove').click(function(event){" . $selector . ".datepicker('hide');jQuery('input#" . $this->options['id'] . "').val('');})";
 
-        $view->registerJs($this->_js);
+        $view->registerJs('(function ($) {'.$this->_js.'}(jQuery));', $view::POS_END);
     }
 }
